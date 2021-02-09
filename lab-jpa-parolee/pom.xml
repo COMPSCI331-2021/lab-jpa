@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>nz.ac.auckland</groupId>
+	<artifactId>lab-jpa-parolee-parent</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+	<name>lab-jpa-parolee-parent</name>
+	
+	<properties>
+		<mvn.compiler.version>3.8.0</mvn.compiler.version>
+	</properties>
+	
+	<modules>
+		<module>lab-jpa-parolee-domain-model</module>
+		<module>lab-jpa-parolee-web-service</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<!-- Specify Java version -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${mvn.compiler.version}</version>
+				<configuration>
+					<release>11</release>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
