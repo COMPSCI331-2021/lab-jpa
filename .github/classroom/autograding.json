@@ -1,0 +1,13 @@
+{
+  "tests": [
+   {
+      "name": "testrun",
+      "setup": "",
+      "run": "mvn verify --file pom.xml",
+      "input": "",
+      "output": "",
+      "timeout": 10,
+      "points": 10
+    }
+   ]
+}
