@@ -139,6 +139,9 @@ You should first disconnect from the H2 console, by clicking the `Disconnect` bu
 
 The POM for project `lab-jpa-database` includes a dependency on the H2 library. 
 
+#### GitHub Autograding
+After you finishes all exercises and push all source code to the Github, please ensure that `GitHub Classroom Workflow` for autograding sucessfully runs 
+
 #### Resources
 
 Useful resources for H2  include the H2 website:
