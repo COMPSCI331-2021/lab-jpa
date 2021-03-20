@@ -5,13 +5,12 @@ Before you start
 ----------
 The purpose of this lab is to reinforce and build upon the lecture material concerning Jackson and JPA / Hibernate.
 
-Begin by forking this repository, then cloning your fork onto your local machine.
-
-Begin by forking this repository, then cloning your fork onto your local machine.
+As with previous labs, you must first join a "group" on Canvas and then set up
+your Github teams.
 
 Exercise One - Build the JAX-RS Parolee project
 ----------
-Project `lab-jpa-parolee` is a complete project that implements the Parolee Web service introduced in lectures. It includes a domain model, a DTO (data transmission object) class for `Parolee`, and makes use of the Jackson framework for converting between Java objects and JSON. The project is a multi-module project comprising two modules:
+Project `lab-jpa-parolee` is a complete project that implements the Parolee Web service introducted in the previous lab. It includes a domain model, a DTO (data transmission object) class for `Parolee`, and makes use of the Jackson framework for converting between Java objects and JSON. The project is a multi-module project comprising two modules:
 
 - `lab-jpa-parolee-domain-model`. This module implements the Parolee domain model. It also provides converters (subclasses of `StdSerializer` and `StdDeserializer`) for marshalling and unmarshalling instances of the `java.time` classes.
  
@@ -19,16 +18,21 @@ Project `lab-jpa-parolee` is a complete project that implements the Parolee Web 
 
 This project should be a useful resource as it illustrates how to use many aspects of the JAX-RS framework and API.
 
-#### (a) Import the project
-Import the project into your IDE. If you need help, revise the instructions from Lab 01 for importing multi-module Maven projects.
+#### (a) Import, Build, Run project
 
-#### (b) Build and run the project
-Build and run the project by applying a suitable goal, e.g. `verify`, to the parent project. The POM is configured to build a WAR file, to run an embedded servlet container that hosts the Web service, and to run the integration tests - just like you did for Lab 2. The integration tests should pass.
+This is a multi-module Maven project, so following the usual process for importing it into your IDE, building, and running (`verify` goal) it.
 
-#### (c) Reflect on the project
-Make sure you understand how the project works. The main difference between this project and the Parolee JAX-RS project from Lab 2 is that this project leverages JAX-RS' capability to automate marshalling/unmarshalling to/from different data formats (in this case JSON through MessageBodyReader/Writer implementations that use Jackson). In addition it illustrates the DTO concept.
+The POM is configured to build a WAR file, to run an embedded servlet container that hosts the Web service, and to run the integration tests - just as for Lab 03. The integration tests should pass.
+
+#### (b) Reflect on the project
+
+Make sure you understand how the project works. The main difference between this project and the Parolee JAX-RS project from Lab03 is that this project leverages JAX-RS' capability to automate marshalling/unmarshalling to/from different data formats (in this case JSON through MessageBodyReader/Writer implementations that use Jackson). In addition it illustrates the DTO concept.
+
+Points to consider
+----------
 
 A (non-exhaustive) list of questions to consider include:
+
 - How do we specify that web methods should produce / consume JSON?
 - How do we marshal / unmarshal objects not natively supported by Jackson?
 - We want to make some objects *immutable* (e.g. `Movement` and `GeoPosition` in this case). This necessitates the removal of any *setter* methods in those classes. How do we allow Jackson to unmarshal instances of these classes when it usually relies on setter methods?
@@ -36,25 +40,29 @@ A (non-exhaustive) list of questions to consider include:
 - In this project, identify an example of HATEOAS being employed?
 - How do we marshal / unmarshal generically-typed objects?
 
-Provide your thoughts and reflection on the project here, and in your journal.
-```
-Your thoughts here.
-```
-
-You may want to refer to this project in the future when working on the main assignment. It shows additional HTTP message processing and how to work with generically-typed objects that are to be marshalled and unmarshalled.
-
+You may want to refer to this project in the future when working on the project. It shows additional HTTP message processing and how to work with generically-typed objects that are to be marshalled and unmarshalled.
 
 Exercise Two - Add JSON support to the Concert service
 ----------
-Further develop the Concert Web service from Lab 02 to allow clients to exchange both JSON-based and Java Serialization representations of `Concert`s. Unlike the supplied Parolee project from Lab 2, where JSON was hand-crafted, you want to leverage the JAX-RS framework to automate JSON marshalling and unmarshalling with Jackson.
+Further develop the Concert Web service from Lab03 to allow clients to exchange both JSON-based and Java Serialization representations of `Concert`s. Unlike the supplied Parolee project from Lab03, where JSON was hand-crafted, you want to leverage the JAX-RS framework to automate JSON marshalling and unmarshalling with Jackson.
+
+#### (a) Set up
+
+Spend some time exploring what has been provided. It should be familiar from Lab03. Complete the following steps:
+
+- The implementation of `ConcertResource` included in the `lab-jpa-concert` project is blank.
+
+- Run the Maven `verify` goal. You will see failed tests are reported. Examine the report to determine where the information about the failed tests is found
+
+- Examine the reports for the failed test (the `txt` files are easiest to understand but it is worth looking at the `xml` files as well). Knowing with is missing from the implementation should help you interpret the test reports.
 
 #### (a) Modify the project artifacts
 
-You simply need to work through the following steps:
+Complete the following steps
 
-- The implementation of `ConcertResource` included in the `lab-jpa-concert` project is blank. You should start by replacing this file with your complete `ConcertResource` implementation you developed in Lab 02. 
+- Replace  the empty implementation of `ConcertResource` with your complete `ConcertResource` implementation you developed in Lab03. 
 
-- Add the Jackson dependency to the project's POM file. The artifact you need is RESTEasy's  `resteasy-jckson2-provider`. See the POM for `lab-jpa-parolee-web-service` - it necessarily includes the dependency.
+- Add the Jackson dependency to the project's POM file. The artifact you need is RESTEasy's  `resteasy-jckson2-provider`. See the POM for `lab-jpa-parolee-web-service` from Exercise One - it necessarily includes the dependency.
 
 - Modify the `@Produces` / `@Consumes` annotations in the `ConcertResource` class to add the JSON MIME type.
 
@@ -72,18 +80,14 @@ public class Foo { }
 
 #### (b) Build and run the project
 
-Once you've amended the code, build and run the project. With the  test cases supplied in `ConcertResourceJavaSerializationIT` and `ConcertResourceJsonIT`, the integration tests should demonstrate that the Web service offers both Java serialization and JSON representations of resources. To see the JSON in the HTTP message bodies, configure logging output for the namespace `org.apache.http` to `DEBUG` (see Lab 02).
+Once you've amended the code, build and run the project. With the  test cases supplied in `ConcertResourceJavaSerializationIT` and `ConcertResourceJsonIT`, the integration tests should demonstrate that the Web service offers both Java serialization and JSON representations of resources. To see the JSON in the HTTP message bodies, configure logging output for the namespace `org.apache.http` to `DEBUG` (see Lab03).
 
-#### (c) Reflect on the project
+Points to consider
+----------
 
-Reflect on what you've done. In particular, consider how the JAX-RS framework separates the concerns of resource representation from application logic. What would you need to do to add support for another data format, e.g. XML? What quality attribute is promoted by the way that JAX-RS manages data formats?
-
-Record any reflections here, and in your journal.
-
-```
-Your reflections here.
-```
-
+- How does the JAX-RS framework separate the concerns of resource representation from application logic?
+- What would you need to do to add support for another data format, e.g. XML?
+- What quality attribute is promoted by the way that JAX-RS manages data formats?
 
 Exercise Three - Complete the Concert database application
 ----------
@@ -149,3 +153,17 @@ Useful resources for H2  include the H2 website:
 <http://www.h2database.com/html/main.html>
 
 From here, you can download the H2 Console for your own machines. The website also has useful information, e.g. the SQL grammar for H2.
+
+<h2>Assessment</h2>
+
+The marking of this lab will be based on your team repository as of Friday 2 April 1700hrs.
+
+Assessment will be performed by examining the commit logs and other
+information associated with your team repository.  You must demonstrate that
+you have engaged with the lab material and fully participated with the
+team. This means we expect to see non-trivial commits, with meaningful commit
+messages. As with past labs, we will be looking for evidence that there was
+cooperation and collaboration within the team. Examples including making
+useful commits, and commenting on actions by other team members.
+
+
