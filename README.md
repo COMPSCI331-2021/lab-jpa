@@ -8,9 +8,11 @@ The purpose of this lab is to reinforce and build upon the lecture material conc
 As with previous labs, you must first join a "group" on Canvas and then set up
 your Github teams.
 
+Make sure you include your `Team.md` file with a brief description of the roles and contribution of each member. Please also include, for each member, what their Github account name is. 
+
 Exercise One - Build the JAX-RS Parolee project
 ----------
-Project `lab-jpa-parolee` is a complete project that implements the Parolee Web service introducted in the previous lab. It includes a domain model, a DTO (data transmission object) class for `Parolee`, and makes use of the Jackson framework for converting between Java objects and JSON. The project is a multi-module project comprising two modules:
+Project `lab-jpa-parolee` is a complete project that implements the Parolee Web service introduced in the previous lab. It includes a domain model, a DTO (data transmission object) class for `Parolee`, and makes use of the Jackson framework for converting between Java objects and JSON. The project is a multi-module project comprising two modules:
 
 - `lab-jpa-parolee-domain-model`. This module implements the Parolee domain model. It also provides converters (subclasses of `StdSerializer` and `StdDeserializer`) for marshalling and unmarshalling instances of the `java.time` classes.
  
@@ -36,7 +38,7 @@ A (non-exhaustive) list of questions to consider include:
 - How do we specify that web methods should produce / consume JSON?
 - How do we marshal / unmarshal objects not natively supported by Jackson?
 - We want to make some objects *immutable* (e.g. `Movement` and `GeoPosition` in this case). This necessitates the removal of any *setter* methods in those classes. How do we allow Jackson to unmarshal instances of these classes when it usually relies on setter methods?
--  Consider the use of the `Parolee` *DTO* (data transmission object) - a simplified version of the domain `Parolee` class, specifically used for data transfer between client and service. Why do you think this has been done here? More generally, under what circumstances do you think this appropriate? Under what circumstances do you think this is inappropriate or unneccessary? What are the benefits and drawbacks of this approach?
+-  Consider the use of the `Parolee` *DTO* (data transmission object) - a simplified version of the domain `Parolee` class, specifically used for data transfer between client and service. Why do you think this has been done here? More generally, under what circumstances do you think this appropriate? Under what circumstances do you think this is inappropriate or unnecessary? What are the benefits and drawbacks of this approach?
 - In this project, identify an example of HATEOAS being employed?
 - How do we marshal / unmarshal generically-typed objects?
 
@@ -56,13 +58,13 @@ Spend some time exploring what has been provided. It should be familiar from Lab
 
 - Examine the reports for the failed test (the `txt` files are easiest to understand but it is worth looking at the `xml` files as well). Knowing with is missing from the implementation should help you interpret the test reports.
 
-#### (a) Modify the project artifacts
+#### (a) Modify the project artefacts
 
 Complete the following steps
 
 - Replace  the empty implementation of `ConcertResource` with your complete `ConcertResource` implementation you developed in Lab03. 
 
-- Add the Jackson dependency to the project's POM file. The artifact you need is RESTEasy's  `resteasy-jckson2-provider`. See the POM for `lab-jpa-parolee-web-service` from Exercise One - it necessarily includes the dependency.
+- Add the Jackson dependency to the project's POM file. The artefact you need is RESTEasy's  `resteasy-jckson2-provider`. See the POM for `lab-jpa-parolee-web-service` from Exercise One - it necessarily includes the dependency.
 
 - Modify the `@Produces` / `@Consumes` annotations in the `ConcertResource` class to add the JSON MIME type.
 
@@ -95,8 +97,6 @@ For this exercise, complete the `lab-jpa-database` project so that the unit test
 
 The project is a simple Maven project using JPA / Hibernate to enable the persistence of `Concert`s and `Performer`s. It contains the following classes:
 
-The project is a simple Maven project that includes the following key artifacts:
-
 - Domain classes `Concert` and `Performer`. `Concert` has a unique ID, a title, a date and one `Performer`. `Performer` has a unique ID, a name, image file and `Genre`. A `Performer` can feature in many `Concert`s, hence there's a one-to-many relationship between `Performer` and `Concert`. The relationship is unidirectional, from `Concert` to `Performer`.
 
 - Class `ConcertTest`, a unit test that tests the Hibernate `EntityManagerFactory` and `EntityManager` classes to access the database.
@@ -116,22 +116,22 @@ For this task, annotate the `Concert` and `Performer` classes. Important things 
 
 - `Performer`'s `genre` field is an `enum` type. We want to persist this in the database as a `String`. Investigate how we can configure this using the `@Enumerated` annotation.
 
-- The pre-defined database in `db-init.sql` uses `AUTO_INCREMENT` to automatically geneerate and assign valid IDs to newly persisted entities. To force Hibernate to utilize the `AUTO_INCREMENT` functionality rather than its own generation strategy, we can set the `strategy` property of the `@GeneratedValue` annotation to `GenerationType.IDENTITY`.
+- The pre-defined database in `db-init.sql` uses `AUTO_INCREMENT` to automatically generate and assign valid IDs to newly persisted entities. To force Hibernate to utilise the `AUTO_INCREMENT` functionality rather than its own generation strategy, we can set the `strategy` property of the `@GeneratedValue` annotation to `GenerationType.IDENTITY`.
 
 #### (b) Run the unit tests
 Once you've annotated your classes, simply run the unit tests from your IDE (there is no need to run a Maven goal for this project, as we are not running integration tests which require an active server). The unit tests should pass. If they do not, modify the annotations from task (a) until they do. You should not need to modify anything in the project, other than adding JPA annotations.
 
-#### (c) Reflect on the project
-Once you've completed your implementation, reflect on the design considerations above, and on the project as a whole. Can you think of any other ways to design a Concert database? Are there any benefits / trade-offs with your alternative approach?
+Points to consider
+----------
 
-```
-Your reflections here.
-```
+- Can you think of any other ways to design a Concert database?
+- Are there any benefits / trade-offs with your alternative approach?
 
 #### Use of H2
-Class `CooncertTest` configures the H2 database connection to ensure that any changes to the database are persisted to the local file system (the connection could have been configured such that the database exists only in memory, in which case its data would be lost once the JVM running the database  shuts down). Having the data persisted on disk is convenient as H2 includes a console application that you can use to access the database used by the application. Using the H2 Console, you can interact with the database, e.g. to run queries and see their results.
+Class `ConcertTest` configures the H2 database connection to ensure that any changes to the database are persisted to the local file system (the connection could have been configured such that the database exists only in memory, in which case its data would be lost once the JVM running the database  shuts down). Having the data persisted on disk is convenient as H2 includes a console application that you can use to access the database used by the application. Using the H2 Console, you can interact with the database, e.g. to run queries and see their results.
 
-The H2 Console runs in a Web browser. To run the application, use Windows' `Start` menu to navigate to the H2 folder, and select H2 Console. The default username and password for connecting is `sa` and `sa`.
+The H2 Console runs in a Web browser. See below for acquiring it.
+The default username and password for connecting is `sa` and `sa`.
 
 When configured as described above, there can be at most one connection to the database. If you are using the H2 Console and are connected, you cannot run the test cases. When the program tries to connect to the database, a connection exception will be thrown:
 
@@ -144,7 +144,7 @@ You should first disconnect from the H2 console, by clicking the `Disconnect` bu
 The POM for project `lab-jpa-database` includes a dependency on the H2 library. 
 
 #### GitHub Classroom
-After you finishes all exercises and push all source code to the Github, please ensure that `GitHub Classroom Workflow` for autograding sucessfully runs without any errors. 
+After you finishes all exercises and push all source code to the Github, please ensure that `GitHub Classroom Workflow` for autograding successfully runs without any errors. 
 
 #### Resources
 
@@ -166,4 +166,8 @@ messages. As with past labs, we will be looking for evidence that there was
 cooperation and collaboration within the team. Examples including making
 useful commits, and commenting on actions by other team members.
 
+Marks will be allocated as follows (maximum of 2 marks, minimum of 0):
 
+- If any tests do not pass, 1 mark will be deducted from the possible score from all team members
+- Any member that we cannot find evidence of having contributed to the lab will have 2 marks deducted
+- If there is no `Team.md` file or it does not contain the relevant information, 1 mark will be deducted from all team members
